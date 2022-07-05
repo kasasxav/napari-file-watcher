@@ -1,0 +1,6 @@
+
+*.xml
+*.pyc
+*.txt
+.idea/napari-imswitch.iml
+napari_imswitch_client.egg-info/PKG-INFO
