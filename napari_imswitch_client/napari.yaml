@@ -1,0 +1,10 @@
+name: napari-imswitch-client
+contributions:
+  commands:
+  - id: napari-imswitch-client.imscripting_widget
+    title: ImSwitch scripting
+    python_name: napari_imswitch_client.main_module:ImScriptingWidget
+
+  widgets:
+    - command: napari-imswitch-client.imscripting_widget
+      display_name: ImSwitch Scripting
