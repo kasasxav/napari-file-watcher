@@ -4,7 +4,12 @@ contributions:
   - id: napari-imswitch-client.imscripting_widget
     title: ImSwitch scripting
     python_name: napari_imswitch_client.main_module:ImScriptingWidget
+  - id: napari-imswitch-client.watcher_widget
+    title: File watcher
+    python_name: napari_imswitch_client.main_module:WatcherWidget
 
   widgets:
     - command: napari-imswitch-client.imscripting_widget
       display_name: ImSwitch Scripting
+    - command: napari-imswitch-client.watcher_widget
+      display_name: File watcher
