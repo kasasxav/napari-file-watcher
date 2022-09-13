@@ -115,6 +115,7 @@ class WatcherWidget(QWidget):
         self.watcher = []
 
     def updateFileList(self):
+        self.path = self.folderEdit.text()
         res = []
         for file in os.listdir(self.path):
             if file.endswith('tiff'):
@@ -129,10 +130,12 @@ class WatcherWidget(QWidget):
             self.path = path
             self.folderEdit.setText(self.path)
             self.updateFileList()
+            self.watchCheck.setChecked(False)
 
     def toggleWatch(self, checked):
         if checked:
             self.watcher = FileWatcher(self.path, 'tiff', 1)
+            self.updateFileList()
             files = self.watcher.filesInDirectory()
             self.toExecute = files
             self.watcher.sigNewFiles.connect(self.newFiles)
