@@ -1,12 +1,14 @@
 import os
-from qtpy.QtWidgets import QWidget
+from qtpy.QtWidgets import QWidget, QTreeWidget, QTreeWidgetItem
 from PyQt5 import Qsci
 from qtpy import QtGui, QtWidgets
 from napari_imswitch_client.guitools.BetterPushButton import BetterPushButton
 from napari_imswitch_client.guitools.dialogtools import askForFolderPath, askForFilePath
 from napari_imswitch_client.FileWatcher import FileWatcher
-from PIL import Image
-import numpy as np
+from ome_zarr.io import parse_url
+from ome_zarr.reader import Reader
+import zarr
+from datetime import datetime
 
 
 class ImScriptingWidget(QWidget):
@@ -108,7 +110,7 @@ class WatcherWidget(QWidget):
 
         self.watchCheck.toggled.connect(self.toggleWatch)
         self.browseFolderButton.clicked.connect(self.browse)
-
+        self.listWidget.itemClicked.connect(self.showMetadata)
         self.execution = False
         self.toExecute = []
         self.current = []
@@ -118,7 +120,7 @@ class WatcherWidget(QWidget):
         self.path = self.folderEdit.text()
         res = []
         for file in os.listdir(self.path):
-            if file.endswith('tiff'):
+            if file.endswith('zarr'):
                 res.append(file)
 
         self.listWidget.clear()
@@ -132,15 +134,26 @@ class WatcherWidget(QWidget):
             self.updateFileList()
             self.watchCheck.setChecked(False)
 
+    def showMetadata(self, item):
+        metadata = self.getMetadata(item.text())
+        self.window = ViewTree(metadata)
+        self.window.show()
+
+    def getMetadata(self, fileName):
+        path = self.path + '/' + fileName
+        store = parse_url(path, mode="r").store
+        root = zarr.group(store=store)
+        return root.attrs['ImSwitchData']
+
     def toggleWatch(self, checked):
         if checked:
-            self.watcher = FileWatcher(self.path, 'tiff', 1)
+            self.watcher = FileWatcher(self.path, 'zarr', 1)
             self.updateFileList()
             files = self.watcher.filesInDirectory()
             self.toExecute = files
             self.watcher.sigNewFiles.connect(self.newFiles)
             self.watcher.start()
-            self.runNextFile()
+            self.runNextFiles()
         else:
             self.watcher.stop()
             self.watcher.quit()
@@ -149,15 +162,47 @@ class WatcherWidget(QWidget):
     def newFiles(self, files):
         self.updateFileList()
         self.toExecute.extend(files)
-        self.runNextFile()
+        self.runNextFiles()
 
-    def runNextFile(self):
-        if len(self.toExecute) and not self.execution:
-            self.current = self.path + '\\' + self.toExecute.pop()
-            im = np.array(Image.open(self.current))
-            self._viewer.add_image(im)
-            self.execution = False
-            #os.remove(self.current)
+    def runNextFiles(self):
+        while len(self.toExecute) and not self.execution:
+            self.execution = True
+            name = self.toExecute.pop()
+            self.current = self.path + '/' + name
+            reader = Reader(parse_url(self.current))
+            nodes = list(reader())
+            image_node = nodes[0]
+            dask_data = image_node.data
+            self.watcher.addToLog(self.current, str(datetime.now()))
+            self._viewer.add_image(dask_data, channel_axis=0, name=name)
             self.updateFileList()
-            self.runNextFile()
+        self.execution = False
 
+
+class ViewTree(QTreeWidget):
+    def __init__(self, value) -> None:
+        super().__init__()
+        self.fill_item(self.invisibleRootItem(), value)
+
+    @staticmethod
+    def fill_item(item: QTreeWidgetItem, value) -> None:
+        if value is None:
+            return
+        elif isinstance(value, dict):
+            for key, val in sorted(value.items()):
+                ViewTree.new_item(item, str(key), val)
+        elif isinstance(value, (list, tuple)):
+            for val in value:
+                if isinstance(val, (str, int, float)):
+                    ViewTree.new_item(item, str(val))
+                else:
+                    ViewTree.new_item(item, f"[{type(val).__name__}]", val)
+        else:
+            ViewTree.new_item(item, str(value))
+
+    @staticmethod
+    def new_item(parent: QTreeWidgetItem, text:str, val=None) -> None:
+        child = QTreeWidgetItem([text])
+        ViewTree.fill_item(child, val)
+        parent.addChild(child)
+        child.setExpanded(False)
