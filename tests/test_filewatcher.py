@@ -23,5 +23,8 @@ def test_new_files(qtbot, widget=None):
     with qtbot.waitSignal(widget.watcher.sigNewFiles):
         shutil.copy('example_data/neuron_tile_8.zarr', 'example_data/run/neuron_tile_8.zarr')
     widget.showMetadata('neuron_tile_8.zarr')
-    os.rmdir('example_data/run')
+    try:
+        os.rmdir('example_data/run')
+    except FileNotFoundError:
+        pass
 

@@ -28,5 +28,8 @@ def test_add():
     test_browse(widget)
     widget.add()
     assert(filecmp.cmpfiles('example_data/', 'example_data/run/', ['timelapse.py', 'experiment.py']))
-    os.remove('example_data/run/experiment.py')
-    os.rmdir('example_data/run')
+    try:
+        os.remove('example_data/run/experiment.py')
+        os.rmdir('example_data/run')
+    except FileNotFoundError:
+        pass
