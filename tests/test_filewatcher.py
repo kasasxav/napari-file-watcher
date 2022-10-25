@@ -32,5 +32,5 @@ def test_new_files(qtbot, widget=None):
         except PermissionError:
             test_browse(widget=widget, path='example_data/')
             widget.toggleWatch(True)
-    widget.showMetadata(widget.list['neuron_tile_8.zarr'])
+    widget.showMetadata('neuron_tile_8.zarr')
 
