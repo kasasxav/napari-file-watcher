@@ -141,7 +141,9 @@ class WatcherWidget(QWidget):
             self.watchCheck.setChecked(False)
 
     def showMetadata(self, item):
-        metadata = self.getMetadata(item.text())
+        if not(isinstance(item, str)):
+            item = item.text()
+        metadata = self.getMetadata(item)
         self.window = ViewTree(metadata)
         self.window.show()
 
