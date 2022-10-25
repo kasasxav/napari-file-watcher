@@ -39,8 +39,9 @@ class ImScriptingWidget(QWidget):
         self.scintilla = Scintilla()
         layout.addWidget(self.scintilla, 2, 0, 1, 3)
 
-    def browse(self):
-        path = askForFolderPath(self, defaultFolder=self.path)
+    def browse(self, path=None):
+        if not path:
+            path = askForFolderPath(self, defaultFolder=self.path)
         if path:
             self.path = path
             self.folderEdit.setText(self.path)
@@ -51,8 +52,9 @@ class ImScriptingWidget(QWidget):
         file.write(text)
         file.close()
 
-    def open(self):
-        path = askForFilePath(self, defaultFolder=self.path)
+    def open(self, path=None):
+        if not path:
+            path = askForFilePath(self, defaultFolder=self.path)
         if path:
             file = open(path, "r")
             text = file.read()
@@ -126,8 +128,9 @@ class WatcherWidget(QWidget):
         self.listWidget.clear()
         self.listWidget.addItems(res)
 
-    def browse(self):
-        path = askForFolderPath(self, defaultFolder=self.path)
+    def browse(self, path=None):
+        if not path:
+            path = askForFolderPath(self, defaultFolder=self.path)
         if path:
             self.path = path
             self.folderEdit.setText(self.path)
