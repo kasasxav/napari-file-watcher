@@ -154,12 +154,11 @@ class WatcherWidget(QWidget):
     def toggleWatch(self, checked):
         if checked:
             self.watcher = FileWatcher(self.path, 'zarr', 1)
-            self.updateFileList()
             files = self.watcher.filesInDirectory()
-            self.toExecute = files
             self.watcher.sigNewFiles.connect(self.sigNewFiles)
             self.watcher.start()
-            self.runNextFiles()
+            if files:
+                self.sigNewFiles.emit()
         else:
             self.watcher.stop()
             self.watcher.quit()
@@ -167,7 +166,10 @@ class WatcherWidget(QWidget):
 
     def newFiles(self, files):
         self.updateFileList()
-        self.toExecute.extend(files)
+        if len(self.toExecute) > 0:
+            self.toExecute.extend(files)
+        else:
+            self.toExecute = files
         self.runNextFiles()
 
     def runNextFiles(self):
