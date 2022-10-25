@@ -20,11 +20,16 @@ def test_new_files(qtbot, widget=None):
     if not widget:
         widget = WatcherWidget(napari.Viewer(show=False))
     with qtbot.waitSignal(widget.sigNewFiles):
-        test_browse(widget=widget, path='example_data/')
-        widget.toggleWatch(True)
+        try:
+            test_browse(widget=widget, path='example_data/run')
+            shutil.copy('example_data/neuron_tile_8.zarr', 'example_data/run/neuron_tile_8.zarr')
+            widget.toggleWatch(True)
+            try:
+                os.rmdir('example_data/run')
+            except FileNotFoundError:
+                pass
+        except PermissionError:
+            test_browse(widget=widget, path='example_data/')
+            widget.toggleWatch(True)
     widget.showMetadata('neuron_tile_8.zarr')
-    try:
-        os.rmdir('example_data/run')
-    except FileNotFoundError:
-        pass
 
