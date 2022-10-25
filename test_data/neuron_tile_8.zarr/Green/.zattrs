@@ -1,0 +1,163 @@
+{
+    "ImSwitchData": {
+        "Detector:FocusLock:Binning": 1,
+        "Detector:FocusLock:Model": "mock",
+        "Detector:FocusLock:Param:exposure": 1,
+        "Detector:FocusLock:Param:image_height": 500,
+        "Detector:FocusLock:Param:image_width": 500,
+        "Detector:FocusLock:Pixel size": [
+            1,
+            1,
+            1
+        ],
+        "Detector:FocusLock:ROI": [
+            0,
+            0,
+            500,
+            500
+        ],
+        "Detector:Green:Binning": 1,
+        "Detector:Green:Model": "C14440-20UP",
+        "Detector:Green:Param:Camera pixel size": 0.1,
+        "Detector:Green:Param:Internal frame interval": 0.10001067647058824,
+        "Detector:Green:Param:Internal frame rate": 9.998932466916031,
+        "Detector:Green:Param:Readout time": 0.011215058823529411,
+        "Detector:Green:Param:Real exposure time": 0.10000397058823529,
+        "Detector:Green:Param:Set exposure time": 0.1,
+        "Detector:Green:Param:Trigger source": "External \"frame-trigger\"",
+        "Detector:Green:Pixel size": [
+            1,
+            0.1,
+            0.1
+        ],
+        "Detector:Green:ROI": [
+            864,
+            676,
+            588,
+            588
+        ],
+        "Detector:Red:Binning": 1,
+        "Detector:Red:Model": "C14440-20UP",
+        "Detector:Red:Param:Camera pixel size": 0.1,
+        "Detector:Red:Param:Internal frame interval": 0.011219926470588235,
+        "Detector:Red:Param:Internal frame rate": 89.12714380271444,
+        "Detector:Red:Param:Readout time": 0.011215058823529411,
+        "Detector:Red:Param:Real exposure time": 0.010001176470588236,
+        "Detector:Red:Param:Set exposure time": 0.010001176470588236,
+        "Detector:Red:Param:Trigger source": "Internal trigger",
+        "Detector:Red:Pixel size": [
+            1,
+            0.1,
+            0.1
+        ],
+        "Detector:Red:ROI": [
+            0,
+            0,
+            2304,
+            2304
+        ],
+        "Laser:405 (ON):Enabled": true,
+        "Laser:405 (ON):Value": 50.0,
+        "Laser:488 (EXC):Enabled": true,
+        "Laser:488 (EXC):Value": 75.0,
+        "Laser:488 (OFF):Enabled": true,
+        "Laser:488 (OFF):Value": 200.0,
+        "Laser:592 (EXC):Enabled": false,
+        "Laser:592 (EXC):Value": 1.0,
+        "Laser:592 (OFF):Enabled": false,
+        "Laser:592 (OFF):Value": 0.0,
+        "Laser:640 (Ex):Enabled": false,
+        "Laser:640 (Ex):Value": 0.0,
+        "Positioner:Stage:X:Position": 1170.0,
+        "Positioner:Stage:Y:Position": 90.0,
+        "Positioner:Stage:Z:Position": 96.39999999999972,
+        "Positioner:X:X:Position": 0,
+        "Positioner:Y:Y:Position": 0,
+        "Positioner:Z:Z:Position": 0,
+        "Rec:Frames": "null",
+        "Rec:LapseFreq": "null",
+        "Rec:LapseTime": "null",
+        "Rec:Mode": "ScanOnce",
+        "Rec:Time": "null",
+        "ScanStage:axis_centerpos": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "ScanStage:axis_length": [
+            0.59,
+            0.59,
+            0.0
+        ],
+        "ScanStage:axis_startpos": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "ScanStage:axis_step_size": [
+            0.035,
+            0.035,
+            1.0
+        ],
+        "ScanStage:phase_delay": 40.0,
+        "ScanStage:positive_direction": [
+            true,
+            true,
+            true
+        ],
+        "ScanStage:sequence_time": 0.007,
+        "ScanStage:target_device": [
+            "X",
+            "Y",
+            "Z"
+        ],
+        "ScanTTL:TTL_end": [
+            [
+                0.001
+            ],
+            [
+                0.0027
+            ],
+            [
+                0.0038
+            ],
+            [
+                0.0038
+            ]
+        ],
+        "ScanTTL:TTL_start": [
+            [
+                5e-05
+            ],
+            [
+                0.0011
+            ],
+            [
+                0.0028
+            ],
+            [
+                0.0028
+            ]
+        ],
+        "ScanTTL:sequence_time": 0.008,
+        "ScanTTL:target_device": [
+            "405 (ON)",
+            "488 (OFF)",
+            "488 (EXC)",
+            "Green"
+        ]
+    },
+    "detector_name": "Green",
+    "element_size_um": [
+        1,
+        0.1,
+        0.1
+    ],
+    "writing": false
+}
