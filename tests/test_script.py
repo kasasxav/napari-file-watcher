@@ -7,7 +7,7 @@ import os
 def test_open(widget=None):
     if not widget:
         widget = ImScriptingWidget(napari.Viewer(show=False))
-    path = 'test_data/timelapse.py'
+    path = 'example_data/timelapse.py'
     widget.open(path=path)
 
 
@@ -23,5 +23,5 @@ def test_add():
     test_open(widget)
     test_browse(widget)
     widget.add()
-    assert(filecmp.cmpfiles('test_data/', 'tests/run/', ['timelapse.py', 'experiment.py']))
+    assert(filecmp.cmpfiles('example_data/', 'tests/run/', ['timelapse.py', 'experiment.py']))
     os.remove('tests/run/experiment.py')

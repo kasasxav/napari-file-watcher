@@ -16,6 +16,6 @@ def test_new_files(qtbot, widget=None):
     test_browse(widget)
     widget.toggleWatch(True)
     with qtbot.waitSignal(widget.watcher.sigNewFiles):
-        shutil.copy('test_data/neuron_tile_8.zarr', 'tests/run/neuron_tile_8.zarr')
+        shutil.copy('example_data/neuron_tile_8.zarr', 'tests/run/neuron_tile_8.zarr')
     widget.showMetadata('neuron_tile_8.zarr')
 
