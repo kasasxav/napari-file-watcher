@@ -25,6 +25,7 @@ def test_new_files(qtbot, widget=None):
             shutil.copytree('example_data/neuron_tile_8.zarr', 'example_data/run/neuron_tile_8.zarr')
             widget.toggleWatch(True)
             widget.showMetadata('neuron_tile_8.zarr')
+            widget.toggleWatch(False)
             try:
                 shutil.rmtree('example_data/run')
             except FileNotFoundError:
@@ -33,5 +34,6 @@ def test_new_files(qtbot, widget=None):
             test_browse(widget=widget, path='example_data/')
             widget.toggleWatch(True)
             widget.showMetadata('neuron_tile_8.zarr')
+            widget.toggleWatch(False)
 
 
