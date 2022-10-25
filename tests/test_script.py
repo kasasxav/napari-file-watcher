@@ -14,7 +14,10 @@ def test_open(widget=None):
 def test_browse(widget=None):
     if not widget:
         widget = ImScriptingWidget(napari.Viewer(show=False))
-    os.mkdir('example_data/run')
+    try:
+        os.mkdir('example_data/run')
+    except FileExistsError:
+        pass
     path = 'example_data/run'
     widget.browse(path=path)
 
