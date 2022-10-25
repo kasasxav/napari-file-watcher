@@ -158,7 +158,7 @@ class WatcherWidget(QWidget):
             self.watcher.sigNewFiles.connect(self.sigNewFiles)
             self.watcher.start()
             if files:
-                self.sigNewFiles.emit()
+                self.sigNewFiles.emit(files)
         else:
             self.watcher.stop()
             self.watcher.quit()
