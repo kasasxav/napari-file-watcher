@@ -17,7 +17,6 @@ def test_browse(widget=None):
     os.mkdir('example_data/run')
     path = 'example_data/run'
     widget.browse(path=path)
-    os.rmdir('example_data/run')
 
 
 def test_add():
@@ -25,7 +24,6 @@ def test_add():
     test_open(widget)
     test_browse(widget)
     widget.add()
-    os.mkdir('example_data/run')
     assert(filecmp.cmpfiles('example_data/', 'example_data/run/', ['timelapse.py', 'experiment.py']))
     os.remove('example_data/run/experiment.py')
     os.rmdir('example_data/run')
