@@ -2,6 +2,7 @@ from napari_imswitch_client.main_module import WatcherWidget
 import napari
 import shutil
 import os
+import time
 
 
 def test_browse(widget=None, path=None):
@@ -27,6 +28,7 @@ def test_new_files(qtbot, widget=None):
             widget.showMetadata('neuron_tile_8.zarr')
             widget.toggleWatch(False)
             try:
+                time.sleep(1)
                 shutil.rmtree('example_data/run')
             except FileNotFoundError:
                 pass
