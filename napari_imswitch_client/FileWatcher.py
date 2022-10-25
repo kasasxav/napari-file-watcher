@@ -59,7 +59,11 @@ class FileWatcher(QtCore.QThread):
 
     def startLog(self):
         self._log["Starting time"] = str(datetime.now())
-        self._log["Computer name"] = os.environ['COMPUTERNAME']
+        try:
+            computer_name = os.environ['COMPUTERNAME']
+        except KeyError:
+            computer_name = 'Mock name'
+        self._log["Computer name"] = computer_name
 
     def addToLog(self, key, value):
         self._log[key] = value
