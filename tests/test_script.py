@@ -1,6 +1,7 @@
 from napari_imswitch_client.main_module import ImScriptingWidget
 import napari
 import filecmp
+import shutil
 import os
 
 
@@ -29,7 +30,6 @@ def test_add():
     widget.add()
     assert(filecmp.cmpfiles('example_data/', 'example_data/run/', ['timelapse.py', 'experiment.py']))
     try:
-        os.remove('example_data/run/experiment.py')
-        os.rmdir('example_data/run')
+        shutil.rmtree('example_data/run')
     except FileNotFoundError:
         pass

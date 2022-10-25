@@ -25,8 +25,7 @@ def test_new_files(qtbot, widget=None):
             shutil.copytree('example_data/neuron_tile_8.zarr', 'example_data/run/neuron_tile_8.zarr')
             widget.toggleWatch(True)
             try:
-                os.remove('example_data/run/neuron_tile_8.zarr')
-                os.rmdir('example_data/run')
+                shutil.rmtree('example_data/run')
             except FileNotFoundError:
                 pass
         except PermissionError:
