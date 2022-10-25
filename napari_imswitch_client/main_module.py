@@ -1,7 +1,7 @@
 import os
 from qtpy.QtWidgets import QWidget, QTreeWidget, QTreeWidgetItem
 from PyQt5 import Qsci
-from qtpy import QtGui, QtWidgets
+from qtpy import QtGui, QtWidgets, QtCore
 from napari_imswitch_client.guitools.BetterPushButton import BetterPushButton
 from napari_imswitch_client.guitools.dialogtools import askForFolderPath, askForFilePath
 from napari_imswitch_client.FileWatcher import FileWatcher
@@ -88,6 +88,7 @@ class Scintilla(Qsci.QsciScintilla):
 
 class WatcherWidget(QWidget):
     """ Widget that watch for new image files (.tiff) in a specific folder, for running them sequentially."""
+    sigNewFiles = QtCore.Signal(list)
 
     def __init__(self, viewer: 'napari.viewer.Viewer'):
         super().__init__()
@@ -117,6 +118,8 @@ class WatcherWidget(QWidget):
         self.toExecute = []
         self.current = []
         self.watcher = []
+
+        self.sigNewFiles.connect(self.newFiles)
 
     def updateFileList(self):
         self.path = self.folderEdit.text()
@@ -154,7 +157,7 @@ class WatcherWidget(QWidget):
             self.updateFileList()
             files = self.watcher.filesInDirectory()
             self.toExecute = files
-            self.watcher.sigNewFiles.connect(self.newFiles)
+            self.watcher.sigNewFiles.connect(self.sigNewFiles)
             self.watcher.start()
             self.runNextFiles()
         else:

@@ -19,7 +19,7 @@ def test_browse(widget=None, path=None):
 def test_new_files(qtbot, widget=None):
     if not widget:
         widget = WatcherWidget(napari.Viewer(show=False))
-    with qtbot.waitSignal(widget.watcher.sigNewFiles):
+    with qtbot.waitSignal(widget.sigNewFiles):
         test_browse(widget=widget, path='example_data/')
         widget.toggleWatch(True)
     widget.showMetadata('neuron_tile_8.zarr')
