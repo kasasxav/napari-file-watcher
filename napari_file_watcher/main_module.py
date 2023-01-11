@@ -2,16 +2,16 @@ import os
 from qtpy.QtWidgets import QWidget, QTreeWidget, QTreeWidgetItem
 from PyQt5 import Qsci
 from qtpy import QtGui, QtWidgets, QtCore
-from napari_imswitch_client.guitools.BetterPushButton import BetterPushButton
-from napari_imswitch_client.guitools.dialogtools import askForFolderPath, askForFilePath
-from napari_imswitch_client.FileWatcher import FileWatcher
+from napari_file_watcher.guitools.BetterPushButton import BetterPushButton
+from napari_file_watcher.guitools.dialogtools import askForFolderPath, askForFilePath
+from napari_file_watcher.FileWatcher import FileWatcher
 from ome_zarr.io import parse_url
 from ome_zarr.reader import Reader
 import zarr
 from datetime import datetime
 
 
-class ImScriptingWidget(QWidget):
+class ScriptingWidget(QWidget):
     def __init__(self, viewer: 'napari.viewer.Viewer'):
         super().__init__()
         self._viewer = viewer

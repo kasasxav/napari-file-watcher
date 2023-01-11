@@ -1,4 +1,4 @@
-from napari_imswitch_client.main_module import ImScriptingWidget
+from napari_file_watcher.main_module import ScriptingWidget
 import napari
 import filecmp
 import shutil
@@ -7,14 +7,14 @@ import os
 
 def test_open(widget=None):
     if not widget:
-        widget = ImScriptingWidget(napari.Viewer(show=False))
+        widget = ScriptingWidget(napari.Viewer(show=False))
     path = 'example_data/timelapse.py'
     widget.open(path=path)
 
 
 def test_browse(widget=None):
     if not widget:
-        widget = ImScriptingWidget(napari.Viewer(show=False))
+        widget = ScriptingWidget(napari.Viewer(show=False))
     try:
         os.mkdir('example_data/run')
     except FileExistsError:
@@ -24,7 +24,7 @@ def test_browse(widget=None):
 
 
 def test_add():
-    widget = ImScriptingWidget(napari.Viewer(show=False))
+    widget = ScriptingWidget(napari.Viewer(show=False))
     test_open(widget)
     test_browse(widget)
     widget.add()
