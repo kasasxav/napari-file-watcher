@@ -1,15 +1,15 @@
 name: napari-file-watcher
 contributions:
   commands:
-  - id: napari-file-watcher.scripting_widget
-    title: Scripting for microscope control
-    python_name: napari_file_watcher.main_module:ScriptingWidget
   - id: napari-file-watcher.watcher_widget
     title: File watcher
     python_name: napari_file_watcher.main_module:WatcherWidget
+  - id: napari-file-watcher.scripting_widget
+    title: Scripting editor
+    python_name: napari_file_watcher.main_module:ScriptingWidget
 
   widgets:
-    - command: napari-file-watcher.scripting_widget
-      display_name: Scripting for microscope control
     - command: napari-file-watcher.watcher_widget
       display_name: File watcher
+    - command: napari-file-watcher.scripting_widget
+      display_name: Scripting editor

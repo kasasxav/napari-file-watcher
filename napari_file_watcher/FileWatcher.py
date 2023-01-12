@@ -75,6 +75,7 @@ class FileWatcher(QtCore.QThread):
         with open(self.path + '/' + 'log.json', 'a') as f:
             f.write(json.dumps(self._log, indent=4))
 
+
 # Adapted from https://towardsdatascience.com/implementing-a-file-watcher-in-python-73f8356a425d
 # Copyright (C) 2020-2021 ImSwitch developers
 # This file is part of ImSwitch.

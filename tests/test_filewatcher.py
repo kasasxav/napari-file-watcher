@@ -1,4 +1,4 @@
-from napari_imswitch_client.main_module import WatcherWidget
+from napari_file_watcher.main_module import WatcherWidget
 import napari
 import shutil
 import os

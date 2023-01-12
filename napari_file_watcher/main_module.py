@@ -2,13 +2,20 @@ import os
 from qtpy.QtWidgets import QWidget, QTreeWidget, QTreeWidgetItem
 from PyQt5 import Qsci
 from qtpy import QtGui, QtWidgets, QtCore
+
+from datetime import datetime
+from typing import Dict, Type
+
 from napari_file_watcher.guitools.BetterPushButton import BetterPushButton
 from napari_file_watcher.guitools.dialogtools import askForFolderPath, askForFilePath
 from napari_file_watcher.FileWatcher import FileWatcher
-from ome_zarr.io import parse_url
-from ome_zarr.reader import Reader
-import zarr
-from datetime import datetime
+from napari_file_watcher.FileReader import FileReader, ZarrReader, TiffReader, HDF5Reader
+
+DEFAULT_READER_MAP: Dict[str, Type[FileReader]] = {
+    'zarr': ZarrReader,
+    'hdf5': HDF5Reader,
+    'tiff': TiffReader
+}
 
 
 class ScriptingWidget(QWidget):
@@ -44,6 +51,7 @@ class ScriptingWidget(QWidget):
             path = askForFolderPath(self, defaultFolder=self.path)
         if path:
             self.path = path
+            os.mkdir('scripting')
             self.folderEdit.setText(self.path)
 
     def add(self):
@@ -87,7 +95,7 @@ class Scintilla(Qsci.QsciScintilla):
 
 
 class WatcherWidget(QWidget):
-    """ Widget that watch for new image files (.tiff) in a specific folder, for running them sequentially."""
+    """ Widget that watch for new image files in a specific folder, for running them sequentially."""
     sigNewFiles = QtCore.Signal(list)
 
     def __init__(self, viewer: 'napari.viewer.Viewer'):
@@ -101,31 +109,38 @@ class WatcherWidget(QWidget):
         self.watchCheck = QtWidgets.QCheckBox('Watch and run')
 
         self.listWidget = QtWidgets.QListWidget()
-        self.updateFileList()
 
         layout = QtWidgets.QGridLayout()
         self.setLayout(layout)
+
+        self.extensionBox = QtWidgets.QComboBox()
+        self.extensionBox.addItems(['zarr', 'hdf5', 'tiff'])
+        self.extension = 'zarr'
+        self.reader = DEFAULT_READER_MAP[self.extension]()
 
         layout.addWidget(self.folderEdit, 0, 1)
         layout.addWidget(self.browseFolderButton, 0, 0)
         layout.addWidget(self.listWidget, 1, 0, 1, 2)
         layout.addWidget(self.watchCheck, 2, 0)
+        layout.addWidget(self.extensionBox, 2, 1)
 
         self.watchCheck.toggled.connect(self.toggleWatch)
         self.browseFolderButton.clicked.connect(self.browse)
         self.listWidget.itemClicked.connect(self.showMetadata)
+        self.extensionBox.currentIndexChanged.connect(self.changeExtension)
         self.execution = False
         self.toExecute = []
         self.current = []
         self.watcher = []
 
         self.sigNewFiles.connect(self.newFiles)
+        self.updateFileList()
 
     def updateFileList(self):
         self.path = self.folderEdit.text()
         res = []
         for file in os.listdir(self.path):
-            if file.endswith('zarr'):
+            if file.endswith(self.extension):
                 res.append(file)
 
         self.listWidget.clear()
@@ -143,19 +158,15 @@ class WatcherWidget(QWidget):
     def showMetadata(self, item):
         if not(isinstance(item, str)):
             item = item.text()
-        metadata = self.getMetadata(item)
-        self.window = ViewTree(metadata)
-        self.window.show()
-
-    def getMetadata(self, fileName):
-        path = self.path + '/' + fileName
-        store = parse_url(path, mode="r").store
-        root = zarr.group(store=store)
-        return root.attrs['ImSwitchData']
+        path = self.path + '/' + item
+        metadata = self.reader.getMetadata(path)
+        if metadata:
+            self.window = ViewTree(metadata)
+            self.window.show()
 
     def toggleWatch(self, checked):
         if checked:
-            self.watcher = FileWatcher(self.path, 'zarr', 1)
+            self.watcher = FileWatcher(self.path, self.extension, 1)
             files = self.watcher.filesInDirectory()
             self.watcher.sigNewFiles.connect(self.sigNewFiles)
             self.watcher.start()
@@ -179,14 +190,17 @@ class WatcherWidget(QWidget):
             self.execution = True
             name = self.toExecute.pop()
             self.current = self.path + '/' + name
-            reader = Reader(parse_url(self.current))
-            nodes = list(reader())
-            image_node = nodes[0]
-            dask_data = image_node.data
             self.watcher.addToLog(self.current, str(datetime.now()))
-            self._viewer.add_image(dask_data, channel_axis=0, name=name)
+            image = self.reader.read(self.current)
+            self._viewer.add_image(image, name=name)
             self.updateFileList()
-        self.execution = False
+            self.execution = False
+
+    def changeExtension(self):
+        self.extension = self.extensionBox.currentText()
+        self.watchCheck.setChecked(False)
+        self.reader = DEFAULT_READER_MAP[self.extension]()
+        self.updateFileList()
 
 
 class ViewTree(QTreeWidget):
@@ -216,3 +230,4 @@ class ViewTree(QTreeWidget):
         ViewTree.fill_item(child, val)
         parent.addChild(child)
         child.setExpanded(False)
+
