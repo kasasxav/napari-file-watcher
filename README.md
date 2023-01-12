@@ -12,4 +12,6 @@ https://user-images.githubusercontent.com/35917480/212090662-87a7b85c-9ee8-45b3-
 
 
 
-The script editor is for developing scripts and saving them in the filesystem. It can be used by other software that executes the scripts and has another file watcher.
+The script editor is for developing scripts and saving them in the filesystem. 
+
+<img width="386" alt="image" src="https://user-images.githubusercontent.com/35917480/212092654-6fc67023-4d7d-49de-aa35-3f7dfeefc8ff.png">
