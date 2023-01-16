@@ -7,7 +7,7 @@ The file watcher monitors a folder and displays its images (tiff, ome-zarr or hd
 
 
 
-[![IMAGE ALT TEXT](http://img.youtube.com/vi/v=lFRVwlHgJ-Y/0.jpg)](https://www.youtube.com/watch?v=lFRVwlHgJ-Y "Demo napari-file-watcher")
+[![IMAGE ALT TEXT](http://img.youtube.com/vi/lFRVwlHgJ-Y/0.jpg)](https://www.youtube.com/watch?v=lFRVwlHgJ-Y "Demo napari-file-watcher")
 
 
 
