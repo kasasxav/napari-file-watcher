@@ -51,7 +51,8 @@ class ScriptingWidget(QWidget):
             path = askForFolderPath(self, defaultFolder=self.path)
         if path:
             self.path = path
-            os.mkdir('scripting')
+            if not os.path.exists(path + '/scripting')
+                os.mkdir(path + '/scripting')
             self.folderEdit.setText(self.path)
 
     def add(self):
