@@ -14,7 +14,7 @@ Instructions:
 
 1. Select the folder you want to monitor by pressing "Browse".
 2. Select the extension of the files: "zarr", "hdf5" or "tiff".
-3. Click "Watch and run" to reconstruct the current items & the newly arrived.
+3. Click "Watch and run" to display the current items & the newly arrived as napari layers.
 4. If you click in one of the files of the list, the metadata will show (for hdf5 and zarr)
 
 ## Usage: scripting editor
