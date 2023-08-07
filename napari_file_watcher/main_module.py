@@ -1,7 +1,6 @@
 import os
 from qtpy.QtWidgets import QWidget, QTreeWidget, QTreeWidgetItem
-from PyQt5 import Qsci
-from qtpy import QtGui, QtWidgets, QtCore
+from qtpy import QtGui, QtWidgets, QtCore, Qsci
 
 from datetime import datetime
 from typing import Dict, Type
